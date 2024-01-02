@@ -1,0 +1,10 @@
+[package]
+name = "sales-gen"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono.features = [ "serde" ]
+chrono.version = "0.4.31"
+dirs = "5.0.1"
+rand = "0.8.5"
