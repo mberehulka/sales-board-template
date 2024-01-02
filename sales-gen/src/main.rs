@@ -58,13 +58,15 @@ fn main() {
                 }
             })
         {
-            writeln!(&mut file, "{},{},{},{},{},{},{}",
-                sale.date,
-                sale.product.name, sale.product.price,
-                sale.client.name,
-                sale.city.name,
-                sale.price,
-                sale.amount
+            let date = sale.date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
+            let prod_name = sale.product.name;
+            let prod_price = sale.product.price;
+            let cli = sale.client.name;
+            let city = sale.city.name;
+            let price = sale.price;
+            let amount = sale.amount;
+            writeln!(&mut file,
+                "{date},{prod_name},{prod_price:.2},{cli},{city},{price:.2},{amount}"
             ).unwrap()
         }
     }
