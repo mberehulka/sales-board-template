@@ -70,7 +70,7 @@ fn main() {
         .create(true).read(true).write(true).truncate(true)
         .open(&sales_path).unwrap();
 
-    writeln!(&mut sales_file, "Data,Produto,Valor produto,Cliente,Cidade,Valor venda un.,Quantidade").unwrap();
+    writeln!(&mut sales_file, "Data,Produto,Cliente,Cidade,Valor venda un.,Quantidade").unwrap();
 
     for (day_id, day) in date_range.enumerate() {
         if let Weekday::Sun = day.weekday() {
