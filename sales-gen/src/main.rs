@@ -1,5 +1,5 @@
 use std::{io::Write, path::Path};
-use chrono::{DateTime, Utc, Duration, Datelike, Weekday};
+use chrono::{DateTime, Utc, Duration, Datelike, Weekday, Days};
 use rand::{thread_rng, Rng};
 
 mod cities;    use cities::*;
@@ -53,8 +53,8 @@ fn main() {
     }).collect::<Vec<_>>();
     writeln!(&mut price_history_file).unwrap();
 
-    for date_id in 0..date_range_days {
-        write!(&mut price_history_file, "{},", format_date(start_day + Duration::days(1))).unwrap();
+    for (date_id, date) in date_range.clone().enumerate() {
+        write!(&mut price_history_file, "{},", format_date(date)).unwrap();
         for date_prices in product_date_price.iter() {
             write!(&mut price_history_file, "{:.2},", date_prices[date_id]).unwrap();
         }
