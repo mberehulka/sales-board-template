@@ -29,6 +29,7 @@ fn main() {
     let end_day = Utc::now();
     let start_day = end_day - Duration::days(365 * 4);
     let date_range = DateRange(start_day, end_day);
+    let date_range_days = date_range.clone().count();
     
     // Price history
     println!("Gerando histórico de preços aleatoriamente...");
@@ -38,27 +39,27 @@ fn main() {
     let mut price_history_file = std::fs::OpenOptions::new()
         .create(true).read(true).write(true).truncate(true)
         .open(&price_history_path).unwrap();
-
-    write!(&mut price_history_file, "Produto,").unwrap();
-    for day in date_range.clone() {
-        write!(&mut price_history_file, "{},", format_date(day)).unwrap()
-    }
-    writeln!(&mut price_history_file).unwrap();
-        
-    let products_prices = PRODUCTS.into_iter().map(|name| {
+    
+    write!(&mut price_history_file, "Data,").unwrap();
+    let product_date_price = PRODUCTS.into_iter().map(|name| {
         let mut price = thread_rng().gen_range(PRICE_RANGE);
-        let mut date_prices = Vec::new();
         write!(&mut price_history_file, "{name},").unwrap();
-        for _ in date_range.clone() {
+        (0..date_range_days).map(|_| {
             if thread_rng().gen_ratio(1, 15) {
                 price = price - thread_rng().gen_range(PRICE_VARIATION_RANGE);
             }
-            write!(&mut price_history_file, "{price:.2},").unwrap();
-            date_prices.push(price)
+            price
+        }).collect::<Vec<_>>()
+    }).collect::<Vec<_>>();
+    writeln!(&mut price_history_file).unwrap();
+
+    for date_id in 0..date_range_days {
+        write!(&mut price_history_file, "{},", format_date(start_day + Duration::days(1))).unwrap();
+        for date_prices in product_date_price.iter() {
+            write!(&mut price_history_file, "{},", date_prices[date_id]).unwrap();
         }
         writeln!(&mut price_history_file).unwrap();
-        date_prices
-    }).collect::<Vec<_>>();
+    }
     
     // Sales
     println!("Gerando tabela de vendas aleatoriamente...");
@@ -79,13 +80,13 @@ fn main() {
             (0..thread_rng().gen_range(DAY_SALES_RANGE)).into_iter()
             .map(|_| {
                 let product_id = thread_rng().gen_range(0..PRODUCTS.len());
-                let product_price = products_prices[product_id][day_id];
+                let product_price_in_day = product_date_price[product_id][day_id];
                 Sale {
                     date: day,
                     product: PRODUCTS[product_id],
                     client: CLIENTS[thread_rng().gen_range(0..CLIENTS.len())],
                     city: CITIES[thread_rng().gen_range(0..CITIES.len())],
-                    price: product_price - thread_rng().gen_range(DISCOUNT_RANGE),
+                    price: product_price_in_day - thread_rng().gen_range(DISCOUNT_RANGE),
                     amount: thread_rng().gen_range(AMOUNT_RANGE)
                 }
             })
