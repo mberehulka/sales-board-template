@@ -1,5 +1,5 @@
 use std::{io::Write, path::Path};
-use chrono::{DateTime, Utc, Duration, Datelike, Weekday, Days};
+use chrono::{DateTime, Utc, Duration, Datelike, Weekday};
 use rand::{thread_rng, Rng};
 
 mod cities;    use cities::*;
