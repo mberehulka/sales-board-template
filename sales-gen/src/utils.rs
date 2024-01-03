@@ -1,5 +1,6 @@
-use chrono::{Utc, DateTime, Duration};
+use chrono::{Utc, DateTime, Duration, TimeZone};
 
+#[derive(Clone)]
 pub struct DateRange(pub DateTime<Utc>, pub DateTime<Utc>);
 impl Iterator for DateRange {
     type Item = DateTime<Utc>;
@@ -11,4 +12,8 @@ impl Iterator for DateRange {
             None
         }
     }
+}
+
+pub fn format_date<Tz: TimeZone>(date: DateTime<Tz>) -> String {
+    date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true)
 }
