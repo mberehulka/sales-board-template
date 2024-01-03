@@ -19,7 +19,7 @@ struct Sale<'s> {
 }
 
 pub const DAY_SALES_RANGE: std::ops::Range<u32> = 0 .. 100;
-pub const DISCOUNT_RANGE: std::ops::Range<f32> = 0.0 .. 5.0;
+pub const DISCOUNT_RANGE: std::ops::Range<f32> = 0.0 .. 1.0;
 pub const AMOUNT_RANGE: std::ops::Range<u32> = 1 .. 100;
 pub const FILE_NAME: &'static str = "sales";
 
