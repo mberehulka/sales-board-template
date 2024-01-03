@@ -2,7 +2,7 @@ use std::{io::Write, path::Path};
 use chrono::{DateTime, Utc, Duration, Datelike, Weekday};
 use rand::{thread_rng, Rng};
 
-mod cities;    use cities::*;
+mod state;    use state::*;
 mod clients;   use clients::*;
 mod products;  use products::*;
 mod utils;     use utils::*;
@@ -12,7 +12,7 @@ struct Sale {
     pub date: DateTime<Utc>,
     pub product: &'static str,
     pub client: &'static str,
-    pub city: &'static str,
+    pub state: &'static str,
     pub price: f32,
     pub amount: u32
 }
@@ -70,7 +70,7 @@ fn main() {
         .create(true).read(true).write(true).truncate(true)
         .open(&sales_path).unwrap();
 
-    writeln!(&mut sales_file, "Data,Produto,Cliente,Cidade,Valor venda un.,Quantidade").unwrap();
+    writeln!(&mut sales_file, "Data,Produto,Cliente,Estado,Valor venda un.,Quantidade").unwrap();
 
     for (day_id, day) in date_range.enumerate() {
         if let Weekday::Sun = day.weekday() {
@@ -85,7 +85,7 @@ fn main() {
                     date: day,
                     product: PRODUCTS[product_id],
                     client: CLIENTS[thread_rng().gen_range(0..CLIENTS.len())],
-                    city: CITIES[thread_rng().gen_range(0..CITIES.len())],
+                    state: STATES[thread_rng().gen_range(0..STATES.len())],
                     price: product_price_in_day - thread_rng().gen_range(DISCOUNT_RANGE),
                     amount: thread_rng().gen_range(AMOUNT_RANGE)
                 }
@@ -94,10 +94,10 @@ fn main() {
             let date = format_date(sale.date);
             let prod_name = sale.product;
             let cli = sale.client;
-            let city = sale.city;
+            let state = sale.state;
             let price = sale.price;
             let amount = sale.amount;
-            writeln!(&mut sales_file, "{date},{prod_name},{cli},{city},{price:.2},{amount}").unwrap()
+            writeln!(&mut sales_file, "{date},{prod_name},{cli},{state},{price:.2},{amount}").unwrap()
         }
     }
 
