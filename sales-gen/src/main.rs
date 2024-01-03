@@ -17,7 +17,7 @@ struct Sale {
     pub amount: u32
 }
 
-pub const DAY_SALES_RANGE: std::ops::Range<u32> = 0 .. 50;
+pub const DAY_SALES_RANGE: std::ops::Range<u32> = 0 .. 20;
 pub const DISCOUNT_RANGE: std::ops::Range<f32> = 0.0 .. 1.0;
 pub const PRICE_RANGE: std::ops::Range<f32> = 5.0 .. 50.0;
 pub const PRICE_VARIATION_RANGE: std::ops::Range<f32> = -1.0 .. 1.0;
