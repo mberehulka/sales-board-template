@@ -18,7 +18,7 @@ pub const STATES: &[&'static str] = &[
     "Para",
     "Rondonia",
     "Roraima",
-    "Tocantis",
+    "Tocantins",
     "Espirito Santo",
     "Minas Gerais",
     "Rio de Janeiro",
